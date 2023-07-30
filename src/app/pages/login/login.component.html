@@ -1,1 +1,9 @@
-<p>login works!</p>
+
+<mat-tab-group class="container" mat-stretch-tabs="false" mat-align-tabs="center">
+  <mat-tab label="Login">
+    <app-login-form #login></app-login-form>
+  </mat-tab>
+  <mat-tab label="User Registration">
+    <app-user-registration-form #userRegistration></app-user-registration-form>
+  </mat-tab>
+</mat-tab-group>
