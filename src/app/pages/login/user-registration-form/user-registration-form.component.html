@@ -1,1 +1,33 @@
-<p>user-registration-form works!</p>
+<form class="form">
+  <mat-form-field class="form-component">
+    <mat-label>Name</mat-label>
+    <input type="text" matInput [formControl]="userName" placeholder="Name Surname">
+    <mat-error *ngIf="userName.hasError('required')">
+      Name is <strong>required</strong>!
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="form-component">
+    <mat-label>Email</mat-label>
+    <input type="email" matInput [formControl]="userEmail" placeholder="Ex. email@example.com">
+    <mat-error *ngIf="userEmail.hasError('email') && !userEmail.hasError('required')">
+      Please, enter a valid email address
+    </mat-error>
+    <mat-error *ngIf="userEmail.hasError('required')">
+      Email is <strong>required</strong>!
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="form-component">
+    <mat-label>Password</mat-label>
+    <input type="password" matInput [formControl]="userPassword" placeholder="**********">
+    <mat-error *ngIf="userPassword.hasError('minlength') && !userPassword.hasError('required')">
+      Password must be at least {{minLengthPassword}} characters long
+    </mat-error>
+    <mat-error *ngIf="userEmail.hasError('required')">
+      Password is <strong>required</strong>!
+    </mat-error>
+  </mat-form-field>
+
+  <button class="form-component" [disabled]="hasFormControllError()" mat-raised-button color="primary">Register</button>
+</form>

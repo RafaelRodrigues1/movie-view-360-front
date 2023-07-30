@@ -14,5 +14,6 @@ export class LoginComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.loginComponent.minLengthPassword = this.minLengthPassword
+    this.userRegistrationComponent.minLengthPassword = this.minLengthPassword
   }
 }
