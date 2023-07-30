@@ -8,6 +8,7 @@ import {MatInputModule} from '@angular/material/input';
 import {MatTabsModule} from '@angular/material/tabs';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
+import { UserClient } from 'src/app/core/clients/user.client';
 
 const routes: Routes = [
   { path: "login", component: LoginComponent}
@@ -27,6 +28,7 @@ const routes: Routes = [
     ReactiveFormsModule,
     MatTabsModule,
     MatButtonModule
-  ]
+  ],
+  providers: [UserClient]
 })
 export class LoginModule { }
