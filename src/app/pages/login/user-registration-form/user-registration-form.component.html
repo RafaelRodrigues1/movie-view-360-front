@@ -29,5 +29,5 @@
     </mat-error>
   </mat-form-field>
 
-  <button class="form-component" [disabled]="hasFormControllError()" mat-raised-button color="primary">Register</button>
+  <button class="form-component" [disabled]="hasFormControllError()" mat-raised-button color="primary" (click)="saveUser()">Register</button>
 </form>
