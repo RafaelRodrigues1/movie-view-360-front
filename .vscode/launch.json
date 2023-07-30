@@ -10,6 +10,13 @@
       "url": "http://localhost:4200/"
     },
     {
+      "name": "Launch Chrome",
+      "request": "launch",
+      "type": "chrome",
+      "url": "http://localhost:4200",
+      "webRoot": "${workspaceFolder}"
+    },
+    {
       "name": "ng test",
       "type": "chrome",
       "request": "launch",
