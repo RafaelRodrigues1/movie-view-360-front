@@ -4,6 +4,10 @@ import { LoginComponent } from './login.component';
 import { LoginFormComponent } from './login-form/login-form.component';
 import { UserRegistrationFormComponent } from './user-registration-form/user-registration-form.component';
 import { RouterModule, Routes } from '@angular/router';
+import {MatInputModule} from '@angular/material/input';
+import {MatTabsModule} from '@angular/material/tabs';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {MatButtonModule} from '@angular/material/button';
 
 const routes: Routes = [
   { path: "login", component: LoginComponent}
@@ -17,7 +21,12 @@ const routes: Routes = [
   ],
   imports: [
     CommonModule,
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(routes),
+    MatInputModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatTabsModule,
+    MatButtonModule
   ]
 })
 export class LoginModule { }
