@@ -7,4 +7,5 @@ export interface Movie {
   releaseDate: number
   gender: Gender
   imgUrl: string
+  isFavorite?: boolean
 }

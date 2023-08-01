@@ -1,0 +1,11 @@
+<mat-card class="card">
+  <mat-card-content class="card-content">
+    <p class="movie-name">{{movie.title}}</p>
+    <img mat-card-image [src]="movie.imgUrl">
+  </mat-card-content>
+  <mat-card-actions class="card-actions">
+    <button mat-icon-button (click)="favoritar()">
+      <mat-icon [class.fav]="movie.isFavorite">favorite</mat-icon>
+    </button>
+  </mat-card-actions>
+</mat-card>
