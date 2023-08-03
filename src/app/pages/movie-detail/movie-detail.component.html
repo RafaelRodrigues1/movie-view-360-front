@@ -1,0 +1,73 @@
+<mat-vertical-stepper [linear]="false" #stepper [animationDuration]="'500'">
+  <mat-step [stepControl]="basicData">
+    <form [formGroup]="basicData" class="form-container">
+      <ng-template matStepLabel>Title, Description and Release date</ng-template>
+      <mat-form-field>
+        <mat-label>Title</mat-label>
+        <input matInput placeholder="Movie title" formControlName="movieTitle" required minlength="1">
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>Description</mat-label>
+        <textarea matInput placeholder="Movie description" formControlName="movieDescription" required minlength="30"></textarea>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Date release</mat-label>
+        <input type="number" matInput placeholder="Movie Date release" formControlName="movieDateRelease" min="1900" max="2050" required>
+      </mat-form-field>
+      <div>
+        <button mat-raised-button color="primary" matStepperNext>Next</button>
+      </div>
+    </form>
+  </mat-step>
+
+  <mat-step [stepControl]="castingGenderData">
+    <form [formGroup]="castingGenderData" class="form-container">
+      <ng-template matStepLabel>Casting and Gender</ng-template>
+      <div class="field-group-container">
+        <div class="field-container">
+          <h2 class="title">Gender</h2>
+          <mat-chip-listbox required formControlName="movieGender" class="gender-container">
+            <mat-chip-option *ngFor="let gender of genders" (click)="selectGender(gender)">{{gender.description}}</mat-chip-option>
+          </mat-chip-listbox>
+        </div>
+        <div class="field-container">
+          <mat-form-field class="example-chip-list" appearance="fill">
+            <mat-label>Casting</mat-label>
+            <mat-chip-grid #chipGrid aria-label="Cast selection">
+              <mat-chip-row *ngFor="let castSelected of selectedCasting" (removed)="removeCast(castSelected)">
+                {{castSelected.name}}
+                <button matChipRemove [attr.aria-label]="'remove ' + castSelected.name">
+                  <mat-icon>cancel</mat-icon>
+                </button>
+              </mat-chip-row>
+            </mat-chip-grid>
+            <input placeholder="Add Cast" #castInput formControlName="movieCasting"
+              [matChipInputFor]="chipGrid" [matAutocomplete]="auto"
+              [matChipInputSeparatorKeyCodes]="separatorKeysCodes"/>
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectedCast($event)">
+              <mat-option *ngFor="let filterCast of filteredsCasting" [value]="filterCast">
+                {{filterCast.name}}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+        </div>
+      </div>
+      <div>
+        <button mat-raised-button color="primary" matStepperNext>Next</button>
+      </div>
+    </form>
+  </mat-step>
+
+  <mat-step>
+    <form [formGroup]="imageData" class="form-container">
+      <ng-template matStepLabel>Movie Image</ng-template>
+      <mat-form-field>
+        <mat-label>Image Url</mat-label>
+        <input required matInput placeholder="Movie Image Url" formControlName="movieImageUrl">
+      </mat-form-field>
+    </form>
+    <div>
+      <button mat-raised-button (click)="saveMovie()" [disabled]="allFormsValids()" color="primary" matStepperNext>Register</button>
+    </div>
+  </mat-step>
+</mat-vertical-stepper>

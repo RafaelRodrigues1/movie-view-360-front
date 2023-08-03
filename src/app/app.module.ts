@@ -8,6 +8,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClientModule } from '@angular/common/http';
 import { HomeModule } from './pages/home/home.module';
 import { LoginModule } from './pages/login/login.module';
+import { MovieDetailModule } from './pages/movie-detail/movie-detail.module';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { LoginModule } from './pages/login/login.module';
     NgbModule,
     HttpClientModule,
     HomeModule,
-    LoginModule
+    LoginModule,
+    MovieDetailModule
   ],
   providers: [],
   bootstrap: [AppComponent]
