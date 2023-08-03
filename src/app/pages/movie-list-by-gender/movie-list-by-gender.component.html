@@ -1,8 +1,10 @@
 <div *ngFor="let gender of getMoviesByGenderKeys()">
-  <mat-toolbar color="primary" class="gender-title">
-    <mat-toolbar-row  class="gender-title">
-      <span>{{ gender.description }}</span>
-    </mat-toolbar-row>
-  </mat-toolbar>
-  <app-card-carousel class="card-carousel" [movies]="getMoviesByGenderValues(gender)"></app-card-carousel>
+  <div *ngIf="getMoviesByGenderValues(gender).length">
+    <mat-toolbar color="primary" class="gender-title">
+      <mat-toolbar-row class="gender-title">
+        <span>{{ gender.description }}</span>
+      </mat-toolbar-row>
+    </mat-toolbar>
+    <app-card-carousel class="card-carousel" [movies]="getMoviesByGenderValues(gender)"></app-card-carousel>
+  </div>
 </div>
