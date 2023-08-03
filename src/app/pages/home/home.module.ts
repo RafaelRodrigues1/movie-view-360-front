@@ -1,22 +1,25 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { HomeComponent } from './home.component';
 import { RouterModule, Routes } from '@angular/router';
 import { ComponentsModule } from 'src/app/shared/components/components.module';
+import { MovieListByGenderComponent } from '../movie-list-by-gender/movie-list-by-gender.component';
 
 const routes: Routes = [
-  { path: "home", component: HomeComponent },
-  { path: "", redirectTo: "/home", pathMatch: "full"}
+  { path: "", component: HomeComponent, pathMatch: 'full'},
 ]
 
 @NgModule({
   declarations: [
-    HomeComponent
+    HomeComponent,
+    MovieListByGenderComponent
   ],
   imports: [
     CommonModule,
     RouterModule.forRoot(routes),
-    ComponentsModule
+    ComponentsModule,
+    MatToolbarModule
   ]
 })
 export class HomeModule { }
