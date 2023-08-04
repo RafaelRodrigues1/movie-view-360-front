@@ -27,7 +27,7 @@
         <div class="field-container">
           <h2 class="title">Gender</h2>
           <mat-chip-listbox required formControlName="movieGender" class="gender-container">
-            <mat-chip-option *ngFor="let gender of genders" (click)="selectGender(gender)">{{gender.description}}</mat-chip-option>
+            <mat-chip-option *ngFor="let gender of genders" (click)="selectGender(gender)" [selected]="true" [class.mat-mdc-chip-selected]="isSameGender(gender)" [class.mdc-evolution-chip--selected]="isSameGender(gender)">{{gender.description}}</mat-chip-option>
           </mat-chip-listbox>
         </div>
         <div class="field-container">
@@ -44,7 +44,7 @@
             <input placeholder="Add Cast" #castInput formControlName="movieCasting"
               [matChipInputFor]="chipGrid" [matAutocomplete]="auto"
               [matChipInputSeparatorKeyCodes]="separatorKeysCodes"/>
-            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectedCast($event)">
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectCast($event)">
               <mat-option *ngFor="let filterCast of filteredsCasting" [value]="filterCast">
                 {{filterCast.name}}
               </mat-option>

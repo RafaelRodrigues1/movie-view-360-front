@@ -11,9 +11,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MovieResolver } from 'src/app/shared/resolvers/movie.resolver';
 
 const routes: Route[] = [
-  {path: 'movie-detail', component: MovieDetailComponent}
+  {path: 'movie-detail', component: MovieDetailComponent},
+  {path: 'movie-detail/:id', component: MovieDetailComponent, resolve: {movie: MovieResolver}}
 ]
 
 @NgModule({

@@ -7,6 +7,7 @@ import { MOCK_GENDERS } from '../movie-list-by-gender/movie-list-by-gender.compo
 import { Cast } from 'src/app/shared/models/cast';
 import { filter, map, startWith } from 'rxjs';
 import { Movie } from 'src/app/shared/models/movie';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-movie-detail',
@@ -18,7 +19,8 @@ export class MovieDetailComponent implements OnInit {
   separatorKeysCodes: number[] = [ENTER, COMMA];
   @ViewChild('castInput') castInput!: ElementRef<HTMLInputElement>;
 
-  movie?: Movie
+  movie: Movie
+  isEdit!: boolean
 
   genders!: Gender[]
   selectedGender!: Gender
@@ -31,23 +33,47 @@ export class MovieDetailComponent implements OnInit {
   castingGenderData: FormGroup = this._formBuilder.group({movieCasting: [''], movieGender: ['']})
   imageData: FormGroup = this._formBuilder.group({movieImageUrl: ['']})
 
-  constructor(private _formBuilder: FormBuilder) {
+  constructor(
+    private _formBuilder: FormBuilder,
+    private activatedRoute: ActivatedRoute
+    ) {
+    this.isEdit = !!this.activatedRoute.snapshot.data['movie']
+    this.movie = this.activatedRoute.snapshot.data['movie']
+  }
+
+  ngOnInit(): void {
+    if(this.isEdit)
+      this.setMovieDetailData()
+    this.configFormControls()
+    this.genders = MOCK_GENDERS
+    this.casting = MOCK_CAST
+  }
+
+  setMovieDetailData() {
+    this.basicData.controls['movieTitle'].setValue(this.movie?.title)
+    this.basicData.controls['movieDescription'].setValue(this.movie?.description)
+    this.basicData.controls['movieDateRelease'].setValue(this.movie?.releaseDate)
+    this.imageData.controls['movieImageUrl'].setValue(this.movie?.imgUrl)
+    this.selectedGender = this.movie?.gender
+    this.selectedCasting = this.movie?.casting || []
+  }
+
+  allFormsValids(): boolean {
+    return this.basicData.invalid || !this.selectedGender
+      || this.imageData.invalid || this.selectedCasting.length <= 0
+  }
+
+  private configFormControls() {
+    this.setValueChanges()
+    this.setFormControlsValidators()
+  }
+
+  private setValueChanges() {
     this.getMovieCastingFormControl().valueChanges.pipe(
       startWith(null),
       filter(name => !!name && name.length >= 3),
       map(name => (name ? this._filterCasting(name) : [])),
     ).subscribe(result => this.filteredsCasting = result);
-  }
-
-  ngOnInit(): void {
-    this.setFormControlsValidators()
-    this.genders = MOCK_GENDERS
-    this.casting = MOCK_CAST
-  }
-
-  allFormsValids(): boolean {
-    return this.basicData.invalid || this.castingGenderData.invalid
-      || this.imageData.invalid || this.selectedCasting.length <= 0
   }
 
   private setFormControlsValidators() {
@@ -65,9 +91,10 @@ export class MovieDetailComponent implements OnInit {
       this.selectedCasting.splice(this.selectedCasting.indexOf(cast), 1)
   }
 
-  selectedCast(event: MatAutocompleteSelectedEvent) {
+  selectCast(event: MatAutocompleteSelectedEvent) {
     const cast = event.option.value
-    if(!this.selectedCasting.includes(cast)) this.selectedCasting.push(cast);
+    if(!this.selectedCasting.filter(castFilter => castFilter.id === cast.id).length)
+      this.selectedCasting.push(cast);
     this.castInput.nativeElement.value = '';
     this.getMovieCastingFormControl().setValue(null);
   }
@@ -79,6 +106,10 @@ export class MovieDetailComponent implements OnInit {
 
   getMovieCastingFormControl(): AbstractControl {
     return this.castingGenderData.controls['movieCasting']
+  }
+
+  isSameGender(gender: Gender): boolean {
+    return gender.id === this.selectedGender.id
   }
 
   saveMovie() {
@@ -99,10 +130,10 @@ export class MovieDetailComponent implements OnInit {
 
 export const MOCK_CAST: Cast[] = [
   {id: 1, name: 'Leonardo DiCaprio', photoUrl: ''},
-  {id: 1, name: 'Ed Murphy', photoUrl: ''},
-  {id: 1, name: 'Ben Afleck', photoUrl: ''},
-  {id: 1, name: 'Sílvio Santos', photoUrl: ''},
-  {id: 1, name: 'Xuxa', photoUrl: ''},
-  {id: 1, name: 'Didi', photoUrl: ''},
-  {id: 1, name: 'Juliana Paes', photoUrl: ''},
+  {id: 2, name: 'Ed Murphy', photoUrl: ''},
+  {id: 3, name: 'Ben Afleck', photoUrl: ''},
+  {id: 4, name: 'Sílvio Santos', photoUrl: ''},
+  {id: 5, name: 'Xuxa', photoUrl: ''},
+  {id: 6, name: 'Didi', photoUrl: ''},
+  {id: 7, name: 'Juliana Paes', photoUrl: ''},
 ]
