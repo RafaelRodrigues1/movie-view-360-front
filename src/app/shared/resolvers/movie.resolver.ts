@@ -4,23 +4,16 @@ import {
   ResolveFn
 } from '@angular/router';
 import { Movie } from '../models/movie';
+import { MovieClient } from 'src/app/core/clients/movie.client';
+import { lastValueFrom } from 'rxjs';
+import { inject } from '@angular/core';
 
-export const MovieResolver: ResolveFn<Movie> = (
+export const MovieResolver: ResolveFn<Movie> = async (
   route: ActivatedRouteSnapshot,
-  state: RouterStateSnapshot): Movie => {
+  state: RouterStateSnapshot,
+  movieClient: MovieClient = inject(MovieClient)): Promise<Movie> => {
     const id = route.paramMap.get('id')
-    return {
-      id: 1,
-      title: 'O chamado',
-      description: 'Descrição, filme de terror Descrição, filme de terror Descrição, filme de terror',
-      releaseDate: 2004,
-      gender: {id: 2, description: 'Terror'},
-      imgUrl: 'https://onlineseries.com.br/wp-content/uploads/2022/01/cropped-O-Chamado-Samara-Morgan-hoje.jpg',
-      isFavorite: true,
-      casting: [
-        {id: 4, name: 'Sílvio Santos', photoUrl: ''},
-        {id: 6, name: 'Didi', photoUrl: ''},
-        {id: 7, name: 'Juliana Paes', photoUrl: ''}
-      ]
-    }
+    const movie$ = movieClient.getMovieById(Number(id))
+    const movie = await lastValueFrom(movie$)
+    return movie
   }

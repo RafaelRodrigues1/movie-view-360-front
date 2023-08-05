@@ -3,13 +3,25 @@ export const enviroment = {
   endPoints: {
     user: {
       path: 'localhost:8080',
-      context: 'user',
+      context: 'users',
       protocol: 'http'
     },
 
     movie: {
       path: 'localhost:8080',
-      context: 'movie',
+      context: 'movies',
+      protocol: 'http'
+    },
+
+    gender: {
+      path: 'localhost:8080',
+      context: 'categories',
+      protocol: 'http'
+    },
+
+    casting: {
+      path: 'localhost:8080',
+      context: 'castings',
       protocol: 'http'
     }
   }
