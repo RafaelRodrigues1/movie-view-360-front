@@ -13,20 +13,15 @@ export class HttpService {
 
   getHeaders(applicationType?: string): HttpHeaders {
     const headers: HttpHeaders = new HttpHeaders()
-    if(applicationType) headers.append('Content-Type', applicationType);
+    if(applicationType) headers.append('Content-Type', applicationType ? applicationType : 'application/json');
     return headers
   }
 
   responseMap(response: any, mapper: any): any {
-    if (mapper) {
-        return mapper(response);
-    } else {
-        if (response.body) {
-            return response.json();
-        } else {
-            return {};
-        }
-    }
+    if (mapper)
+      return mapper(response);
+
+    return response
   }
 
   private getPath(endPoint: EndPoint): string {
