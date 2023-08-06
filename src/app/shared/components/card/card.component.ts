@@ -11,6 +11,6 @@ export class CardComponent {
   @Input('movie') movie!: Movie
 
   favoritar() {
-    this.movie.isFavorite = !this.movie.isFavorite
+    this.movie.favorite = !this.movie.favorite
   }
 }

@@ -39,13 +39,13 @@ export class MovieDetailComponent implements OnInit {
     ) {
     this.isEdit = !!this.activatedRoute.snapshot.data['movie']
     this.movie = this.activatedRoute.snapshot.data['movie']
+    this.genders = this.activatedRoute.snapshot.data['genders']
   }
 
   ngOnInit(): void {
     if(this.isEdit)
       this.setMovieDetailData()
     this.configFormControls()
-    this.genders = MOCK_GENDERS
     this.casting = MOCK_CAST
   }
 
@@ -109,7 +109,7 @@ export class MovieDetailComponent implements OnInit {
   }
 
   isSameGender(gender: Gender): boolean {
-    return gender.id === this.selectedGender.id
+    return gender?.id === this.selectedGender?.id
   }
 
   saveMovie() {

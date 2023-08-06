@@ -12,10 +12,24 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MovieResolver } from 'src/app/shared/resolvers/movie.resolver';
+import { GenderResolver } from 'src/app/shared/resolvers/gender.resolver';
 
 const routes: Route[] = [
-  {path: 'movie-detail', component: MovieDetailComponent},
-  {path: 'movie-detail/:id', component: MovieDetailComponent, resolve: {movie: MovieResolver}}
+  {
+    path: 'movie-detail',
+    component: MovieDetailComponent,
+    resolve: {
+      genders: GenderResolver
+    }
+  },
+  {
+    path: 'movie-detail/:id',
+    component: MovieDetailComponent,
+    resolve: {
+      movie: MovieResolver,
+      genders: GenderResolver
+    }
+  }
 ]
 
 @NgModule({
