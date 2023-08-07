@@ -13,10 +13,11 @@ export interface Movie {
 }
 
 export interface MovieRequest {
-      title: string,
-      description: string,
-      releaseDate: number,
-      genderId: number,
-      imgUrl: string,
-      castings: CastRequest[]
+  id?: number,
+  title: string,
+  description: string,
+  releaseDate: number,
+  genderId: number,
+  imgUrl: string,
+  castings: CastRequest[]
 }

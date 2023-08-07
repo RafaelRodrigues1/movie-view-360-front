@@ -24,7 +24,7 @@ export abstract class HttpClientGeneric<T> {
 
   protected post(parameter: ClientParameter): Observable<T> {
     const [url, options] = this.getRequestDataByParameter(parameter)
-    return this.httpClient.post<T>(url, parameter.body, options).pipe(
+    return this.httpClient.post<T>(url, [parameter.body], options).pipe(
       map(response => this.httpService.responseMap(response, parameter.map))
     )
   }
