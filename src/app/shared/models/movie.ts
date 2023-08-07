@@ -1,4 +1,4 @@
-import { Cast } from "./cast"
+import { Cast, CastRequest } from "./cast"
 import { Gender } from "./gender"
 
 export interface Movie {
@@ -10,4 +10,13 @@ export interface Movie {
   imgUrl: string
   favorite?: boolean
   casting?: Cast[]
+}
+
+export interface MovieRequest {
+      title: string,
+      description: string,
+      releaseDate: number,
+      genderId: number,
+      imgUrl: string,
+      castings: CastRequest[]
 }

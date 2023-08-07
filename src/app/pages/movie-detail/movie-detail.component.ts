@@ -4,10 +4,11 @@ import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/fo
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { Gender } from 'src/app/shared/models/gender';
 import { MOCK_GENDERS } from '../movie-list-by-gender/movie-list-by-gender.component';
-import { Cast } from 'src/app/shared/models/cast';
+import { Cast, CastRequest } from 'src/app/shared/models/cast';
 import { filter, map, startWith } from 'rxjs';
-import { Movie } from 'src/app/shared/models/movie';
+import { Movie, MovieRequest } from 'src/app/shared/models/movie';
 import { ActivatedRoute } from '@angular/router';
+import { Role } from 'src/app/shared/models/role';
 
 @Component({
   selector: 'app-movie-detail',
@@ -17,20 +18,22 @@ import { ActivatedRoute } from '@angular/router';
 export class MovieDetailComponent implements OnInit {
 
   separatorKeysCodes: number[] = [ENTER, COMMA];
-  @ViewChild('castInput') castInput!: ElementRef<HTMLInputElement>;
 
   movie: Movie
+  movieForsave!: MovieRequest
   isEdit!: boolean
 
   genders!: Gender[]
   selectedGender!: Gender
 
   casting!: Cast[]
-  selectedCasting: Cast[] = []
-  filteredsCasting: Cast[] = []
+  selectedActorCasting: Cast[] = []
+  selectedDirectorCasting: Cast[] = []
+  filteredsActorCasting: Cast[] = []
+  filteredsDirectorCasting: Cast[] = []
 
   basicData: FormGroup = this._formBuilder.group({movieTitle: [''], movieDescription: [''], movieDateRelease: ['']})
-  castingGenderData: FormGroup = this._formBuilder.group({movieCasting: [''], movieGender: ['']})
+  castingGenderData: FormGroup = this._formBuilder.group({movieCastingActors: [''], movieCastingDirectors: [''], movieGender: ['']})
   imageData: FormGroup = this._formBuilder.group({movieImageUrl: ['']})
 
   constructor(
@@ -55,57 +58,30 @@ export class MovieDetailComponent implements OnInit {
     this.basicData.controls['movieDateRelease'].setValue(this.movie?.releaseDate)
     this.imageData.controls['movieImageUrl'].setValue(this.movie?.imgUrl)
     this.selectedGender = this.movie?.gender
-    this.selectedCasting = this.movie?.casting || []
+    this.selectedActorCasting = this.filterCastingByRole(Role.ACTOR, this.movie?.casting) || []
+    this.selectedDirectorCasting = this.filterCastingByRole(Role.DIRECTOR, this.movie?.casting) || []
   }
 
   allFormsValids(): boolean {
     return this.basicData.invalid || !this.selectedGender
-      || this.imageData.invalid || this.selectedCasting.length <= 0
-  }
-
-  private configFormControls() {
-    this.setValueChanges()
-    this.setFormControlsValidators()
-  }
-
-  private setValueChanges() {
-    this.getMovieCastingFormControl().valueChanges.pipe(
-      startWith(null),
-      filter(name => !!name && name.length >= 3),
-      map(name => (name ? this._filterCasting(name) : [])),
-    ).subscribe(result => this.filteredsCasting = result);
-  }
-
-  private setFormControlsValidators() {
-    this.basicData.addValidators([Validators.required])
-    this.castingGenderData.addValidators([Validators.required])
-    this.imageData.addValidators([Validators.required])
+      || this.imageData.invalid || this.selectedActorCasting.length <= 0 || this.selectedDirectorCasting.length <= 0
   }
 
   selectGender(gender: Gender) {
     this.selectedGender = gender
   }
 
-  removeCast(cast: Cast) {
-    if(this.selectedCasting.includes(cast))
-      this.selectedCasting.splice(this.selectedCasting.indexOf(cast), 1)
+  removeCast(cast: Cast, casting: Cast[]) {
+    if(casting.includes(cast))
+      casting.splice(casting.indexOf(cast), 1)
   }
 
-  selectCast(event: MatAutocompleteSelectedEvent) {
+  selectCast(event: MatAutocompleteSelectedEvent, formControl: AbstractControl, castInput: HTMLInputElement, casting: Cast[]) {
     const cast = event.option.value
-    if(!this.selectedCasting.filter(castFilter => castFilter.id === cast.id).length)
-      this.selectedCasting.push(cast);
-    this.castInput.nativeElement.value = '';
-    this.getMovieCastingFormControl().setValue(null);
-  }
-
-  private _filterCasting(name: string): Cast[] {
-    const filterValue = name.toLowerCase();
-    return this.casting.filter(cast => cast.name.toLowerCase().includes(filterValue));
-  }
-
-  getMovieCastingFormControl(): AbstractControl {
-    return this.castingGenderData.controls['movieCasting']
+    if(!casting.filter(castFilter => castFilter.id === cast.id).length)
+      casting.push(cast);
+    castInput.value = '';
+    formControl.setValue(null);
   }
 
   isSameGender(gender: Gender): boolean {
@@ -114,7 +90,36 @@ export class MovieDetailComponent implements OnInit {
 
   saveMovie() {
     this.buildMovieForSave()
-    console.log(this.movie)
+    console.log(this.movieForsave)
+  }
+
+  private configFormControls() {
+    this.setValueChanges(this.castingGenderData.controls['movieCastingActors'], Role.ACTOR)
+    this.setValueChanges(this.castingGenderData.controls['movieCastingDirectors'], Role.DIRECTOR)
+    this.setFormControlsValidators()
+  }
+
+  private setValueChanges(formControl: AbstractControl, role: Role) {
+    formControl.valueChanges.pipe(
+      startWith(null),
+      filter(name => !!name && name.length >= 3),
+      map(name => (name ? this._filterCasting(name) : [])),
+    ).subscribe(result => role == Role.ACTOR ? this.filteredsActorCasting = result : this.filteredsDirectorCasting = result);
+  }
+
+  private setFormControlsValidators() {
+    this.basicData.addValidators([Validators.required])
+    this.castingGenderData.addValidators([Validators.required])
+    this.imageData.addValidators([Validators.required])
+  }
+
+  private filterCastingByRole(role: Role, casting?: Cast[]): Cast[] | undefined {
+    return casting?.filter(cast => cast.role == role)
+  }
+
+  private _filterCasting(name: string): Cast[] {
+    const filterValue = name.toLowerCase();
+    return this.casting.filter(cast => cast.name.toLowerCase().includes(filterValue));
   }
 
   private buildMovieForSave() {
@@ -122,9 +127,16 @@ export class MovieDetailComponent implements OnInit {
     const description = this.basicData.controls['movieDescription'].value
     const releaseDate = this.basicData.controls['movieDateRelease'].value
     const imgUrl = this.imageData.controls['movieImageUrl'].value
-    this.movie = {
-      title, description, releaseDate, imgUrl, gender: this.selectedGender, casting: this.selectedCasting
+    this.movieForsave = {
+      title, description, releaseDate, imgUrl, genderId: this.selectedGender.id, castings: this.buildCastingForSave()
     }
+  }
+
+  private buildCastingForSave(): CastRequest[] {
+    const casting: CastRequest[] = []
+    this.selectedActorCasting.forEach(cast => casting.push({castingId: cast.id, role: Role.ACTOR}))
+    this.selectedDirectorCasting.forEach(cast => casting.push({castingId: cast.id, role: Role.DIRECTOR}))
+    return casting
   }
 }
 

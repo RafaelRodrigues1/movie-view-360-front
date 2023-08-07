@@ -31,21 +31,42 @@
           </mat-chip-listbox>
         </div>
         <div class="field-container">
+          <h2 class="title">Casting</h2>
           <mat-form-field class="example-chip-list" appearance="fill">
-            <mat-label>Casting</mat-label>
-            <mat-chip-grid #chipGrid aria-label="Cast selection">
-              <mat-chip-row *ngFor="let castSelected of selectedCasting" (removed)="removeCast(castSelected)">
+            <mat-label>Actors</mat-label>
+            <mat-chip-grid #chipGridActors aria-label="Actor cast selection">
+              <mat-chip-row *ngFor="let castSelected of selectedActorCasting" (removed)="removeCast(castSelected, selectedActorCasting)">
                 {{castSelected.name}}
                 <button matChipRemove [attr.aria-label]="'remove ' + castSelected.name">
                   <mat-icon>cancel</mat-icon>
                 </button>
               </mat-chip-row>
             </mat-chip-grid>
-            <input placeholder="Add Cast" #castInput formControlName="movieCasting"
-              [matChipInputFor]="chipGrid" [matAutocomplete]="auto"
+            <input placeholder="Add Actor" #castActorInput formControlName="movieCastingActors"
+              [matChipInputFor]="chipGridActors" [matAutocomplete]="autocompleteactor"
               [matChipInputSeparatorKeyCodes]="separatorKeysCodes"/>
-            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectCast($event)">
-              <mat-option *ngFor="let filterCast of filteredsCasting" [value]="filterCast">
+            <mat-autocomplete #autocompleteactor="matAutocomplete" (optionSelected)="selectCast($event, castingGenderData.controls['movieCastingActors'], castActorInput, selectedActorCasting)">
+              <mat-option *ngFor="let filterCast of filteredsActorCasting" [value]="filterCast">
+                {{filterCast.name}}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+
+          <mat-form-field class="example-chip-list" appearance="fill">
+            <mat-label>Directors</mat-label>
+            <mat-chip-grid #chipGridDirectors aria-label="Director cast selection">
+              <mat-chip-row *ngFor="let castSelected of selectedDirectorCasting" (removed)="removeCast(castSelected, selectedDirectorCasting)">
+                {{castSelected.name}}
+                <button matChipRemove [attr.aria-label]="'remove ' + castSelected.name">
+                  <mat-icon>cancel</mat-icon>
+                </button>
+              </mat-chip-row>
+            </mat-chip-grid>
+            <input placeholder="Add Director" #castDirectorInput formControlName="movieCastingDirectors"
+              [matChipInputFor]="chipGridDirectors" [matAutocomplete]="autocompletedirector"
+              [matChipInputSeparatorKeyCodes]="separatorKeysCodes"/>
+            <mat-autocomplete #autocompletedirector="matAutocomplete" (optionSelected)="selectCast($event, castingGenderData.controls['movieCastingDirectors'], castDirectorInput, selectedDirectorCasting)">
+              <mat-option *ngFor="let filterCast of filteredsDirectorCasting" [value]="filterCast">
                 {{filterCast.name}}
               </mat-option>
             </mat-autocomplete>
