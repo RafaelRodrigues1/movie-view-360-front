@@ -6,10 +6,11 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { Gender } from 'src/app/shared/models/gender';
 import { MOCK_GENDERS } from '../movie-list-by-gender/movie-list-by-gender.component';
 import { Cast, CastRequest } from 'src/app/shared/models/cast';
-import { filter, lastValueFrom, map, startWith } from 'rxjs';
+import { filter, lastValueFrom, map, of, startWith } from 'rxjs';
 import { Movie, MovieRequest } from 'src/app/shared/models/movie';
 import { ActivatedRoute } from '@angular/router';
 import { Role } from 'src/app/shared/models/role';
+import { CastingClient } from 'src/app/core/clients/casting.client';
 
 @Component({
   selector: 'app-movie-detail',
@@ -40,10 +41,12 @@ export class MovieDetailComponent implements OnInit {
   constructor(
     private _formBuilder: FormBuilder,
     private activatedRoute: ActivatedRoute,
-    private movieClient: MovieClient
+    private movieClient: MovieClient,
+    private castingClient: CastingClient
     ) {
     this.isEdit = !!this.activatedRoute.snapshot.data['movie']
     this.movie = this.activatedRoute.snapshot.data['movie']
+    this.movie.id = this.activatedRoute.snapshot.params['id']
     this.genders = this.activatedRoute.snapshot.data['genders']
   }
 
@@ -51,7 +54,6 @@ export class MovieDetailComponent implements OnInit {
     if(this.isEdit)
       this.setMovieDetailData()
     this.configFormControls()
-    this.casting = MOCK_CAST
   }
 
   setMovieDetailData() {
@@ -92,7 +94,6 @@ export class MovieDetailComponent implements OnInit {
 
   async saveMovie() {
     this.buildMovieForSave()
-    console.log(this.movieForsave)
     const savedMovie$ = this.isEdit ? this.movieClient.updateMovie(this.movieForsave) : this.movieClient.saveMovie(this.movieForsave)
     const savedMovie = await lastValueFrom(savedMovie$)
   }
@@ -107,8 +108,11 @@ export class MovieDetailComponent implements OnInit {
     formControl.valueChanges.pipe(
       startWith(null),
       filter(name => !!name && name.length >= 3),
-      map(name => (name ? this._filterCasting(name) : [])),
-    ).subscribe(result => role == Role.ACTOR ? this.filteredsActorCasting = result : this.filteredsDirectorCasting = result);
+      map(async name => (name ? await lastValueFrom(this.castingClient.autocomplete(name)) : []))
+    ).subscribe(result =>
+      result.then(castings =>
+        role == Role.ACTOR ? this.filteredsActorCasting = castings : this.filteredsDirectorCasting = castings
+      ))
   }
 
   private setFormControlsValidators() {
@@ -119,11 +123,6 @@ export class MovieDetailComponent implements OnInit {
 
   private filterCastingByRole(role: Role, casting?: Cast[]): Cast[] | undefined {
     return casting?.filter(cast => cast.role == role)
-  }
-
-  private _filterCasting(name: string): Cast[] {
-    const filterValue = name.toLowerCase();
-    return this.casting.filter(cast => cast.name.toLowerCase().includes(filterValue));
   }
 
   private buildMovieForSave() {

@@ -31,7 +31,7 @@ export abstract class HttpClientGeneric<T> {
 
   protected put(parameter: ClientParameter): Observable<T> {
     const [url, options] = this.getRequestDataByParameter(parameter)
-    return this.httpClient.put<T>(url, parameter.body, options).pipe(
+    return this.httpClient.put<T>(url, [parameter.body], options).pipe(
       map(response => this.httpService.responseMap(response, parameter.map))
     )
   }
