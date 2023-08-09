@@ -27,7 +27,7 @@ export class MovieClient extends HttpClientGeneric<Movie> {
 
   getMoviesByGender(genderId: number): Observable<Movie[]> {
     return this.getList({
-      path: '', parameters: `?genderId=${genderId}`
+      path: '/by-gender', parameters: `?categoryId=${genderId}`
     })
   }
 }

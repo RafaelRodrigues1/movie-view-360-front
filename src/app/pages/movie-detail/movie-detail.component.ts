@@ -1,12 +1,11 @@
 import { MovieClient } from 'src/app/core/clients/movie.client';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { Gender } from 'src/app/shared/models/gender';
-import { MOCK_GENDERS } from '../movie-list-by-gender/movie-list-by-gender.component';
 import { Cast, CastRequest } from 'src/app/shared/models/cast';
-import { filter, lastValueFrom, map, of, startWith } from 'rxjs';
+import { filter, lastValueFrom, map, startWith } from 'rxjs';
 import { Movie, MovieRequest } from 'src/app/shared/models/movie';
 import { ActivatedRoute } from '@angular/router';
 import { Role } from 'src/app/shared/models/role';
@@ -143,13 +142,3 @@ export class MovieDetailComponent implements OnInit {
     return casting
   }
 }
-
-export const MOCK_CAST: Cast[] = [
-  {id: 1, name: 'Leonardo DiCaprio', photoUrl: ''},
-  {id: 2, name: 'Ed Murphy', photoUrl: ''},
-  {id: 3, name: 'Ben Afleck', photoUrl: ''},
-  {id: 4, name: 'Sílvio Santos', photoUrl: ''},
-  {id: 5, name: 'Xuxa', photoUrl: ''},
-  {id: 6, name: 'Didi', photoUrl: ''},
-  {id: 7, name: 'Juliana Paes', photoUrl: ''},
-]
