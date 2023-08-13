@@ -9,7 +9,7 @@ export interface Movie {
   gender: Gender
   imgUrl: string
   favorite?: boolean
-  casting?: Cast[]
+  castings?: Cast[]
 }
 
 export interface MovieRequest {

@@ -45,7 +45,6 @@ export class MovieDetailComponent implements OnInit {
     ) {
     this.isEdit = !!this.activatedRoute.snapshot.data['movie']
     this.movie = this.activatedRoute.snapshot.data['movie']
-    this.movie.id = this.activatedRoute.snapshot.params['id']
     this.genders = this.activatedRoute.snapshot.data['genders']
   }
 
@@ -61,8 +60,8 @@ export class MovieDetailComponent implements OnInit {
     this.basicData.controls['movieDateRelease'].setValue(this.movie?.releaseDate)
     this.imageData.controls['movieImageUrl'].setValue(this.movie?.imgUrl)
     this.selectedGender = this.movie?.gender
-    this.selectedActorCasting = this.filterCastingByRole(Role.ACTOR, this.movie?.casting) || []
-    this.selectedDirectorCasting = this.filterCastingByRole(Role.DIRECTOR, this.movie?.casting) || []
+    this.selectedActorCasting = this.filterCastingByRole(Role.ACTOR, this.movie?.castings) || []
+    this.selectedDirectorCasting = this.filterCastingByRole(Role.DIRECTOR, this.movie?.castings) || []
   }
 
   allFormsValids(): boolean {
@@ -139,6 +138,7 @@ export class MovieDetailComponent implements OnInit {
     const casting: CastRequest[] = []
     this.selectedActorCasting.forEach(cast => casting.push({castingId: cast.id, role: Role.ACTOR}))
     this.selectedDirectorCasting.forEach(cast => casting.push({castingId: cast.id, role: Role.DIRECTOR}))
+    casting.forEach(cast => this.isEdit ? cast.movieId = this.movie.id : {})
     return casting
   }
 }

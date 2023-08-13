@@ -10,6 +10,7 @@ export interface Cast {
 }
 
 export interface CastRequest {
+  movieId?: number
   castingId: number,
   role: string
 }
