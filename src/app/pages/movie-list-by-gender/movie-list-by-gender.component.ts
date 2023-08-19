@@ -26,7 +26,7 @@ export class MovieListByGenderComponent implements OnInit {
     this.genders.map(async gender => {
       this.movieClient.getMoviesByGender(gender.id)
         .subscribe(result => {
-          this.movies.push(...result)
+          result ? this.movies.push(...result) :
           this.populateMovieByGenders()
         })
     })
