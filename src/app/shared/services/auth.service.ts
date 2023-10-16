@@ -68,6 +68,12 @@ export class AuthService {
   }
 
   clearAuthorizationToken() {
-    localStorage.clear()
+    localStorage.clear();
+  }
+
+  getLoggedUsername(): string {
+    let token: any = localStorage.getItem('access-token')
+    token = token ? jwt_decode(token) : null
+    return token ? token.sub : ""
   }
 }

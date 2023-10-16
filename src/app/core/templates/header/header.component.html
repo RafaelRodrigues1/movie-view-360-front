@@ -1,1 +1,14 @@
-<p>header works!</p>
+<section class="log-data">
+  <span>Welcome, <strong>{{username}}</strong>!!</span>
+
+  <button mat-icon-button [matMenuTriggerFor]="menu">
+    <mat-icon>arrow_drop_down</mat-icon>
+  </button>
+  <mat-menu #menu="matMenu">
+    <button (click)="logout()" mat-menu-item>
+      <mat-icon>logout</mat-icon>
+      <span>Logout</span>
+    </button>
+  </mat-menu>
+</section>
+
