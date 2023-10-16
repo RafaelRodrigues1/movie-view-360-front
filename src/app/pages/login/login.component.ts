@@ -8,7 +8,7 @@ import { UserRegistrationFormComponent } from './user-registration-form/user-reg
 })
 export class LoginComponent implements AfterViewInit {
 
-  minLengthPassword: number = 8
+  minLengthPassword: number = 5
   @ViewChild('login') loginComponent!: LoginComponent
   @ViewChild('userRegistration') userRegistrationComponent!: UserRegistrationFormComponent
 

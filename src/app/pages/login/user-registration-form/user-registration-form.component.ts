@@ -23,12 +23,12 @@ export class UserRegistrationFormComponent implements AfterViewChecked {
 
   saveUser() {
     const user: User = this.buildUser()
-    this.userClient.saveClient(user).subscribe(user => console.log(user))
+    this.userClient.saveUser(user).subscribe(user => console.log(user))
   }
 
   private buildUser(): User {
     return {
-      name: this.userName.value!,
+      username: this.userName.value!,
       email: this.userEmail.value!,
       password: this.userPassword.value!
     }

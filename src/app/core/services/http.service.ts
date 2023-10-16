@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { EndPoint } from '../models/endpoint';
-import { HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -12,8 +12,11 @@ export class HttpService {
   }
 
   getHeaders(applicationType?: string): HttpHeaders {
-    const headers: HttpHeaders = new HttpHeaders()
-    if(applicationType) headers.append('Content-Type', applicationType ? applicationType : 'application/json');
+    const token = localStorage.getItem('access-token')
+    let headers: HttpHeaders = new HttpHeaders()
+    //if(token) headers = headers.set('Authorization', `Bearer ${token}`)
+    //headers = headers.set('Content-Type', applicationType ? applicationType : 'application/json');
+
     return headers
   }
 
