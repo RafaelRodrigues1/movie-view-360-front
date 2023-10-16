@@ -18,5 +18,9 @@
     </mat-error>
   </mat-form-field>
 
-  <button class="form-component" (click)="login()" [disabled]="hasFormControllError()" mat-raised-button color="primary">Log in</button>
+  <mat-error style="text-align: center; margin-bottom: 5px;" *ngIf="loginErro">
+    Invalid username or password!
+  </mat-error>
+
+  <button class="form-component" [disabled]="hasFormControllError()" (click)="login()" mat-raised-button color="primary">Login</button>
 </form>

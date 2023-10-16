@@ -1,19 +1,12 @@
-import { Component, AfterViewInit, ViewChild } from '@angular/core';
-import { UserRegistrationFormComponent } from './user-registration-form/user-registration-form.component';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.less']
 })
-export class LoginComponent implements AfterViewInit {
+export class LoginComponent {
 
-  minLengthPassword: number = 5
-  @ViewChild('login') loginComponent!: LoginComponent
-  @ViewChild('userRegistration') userRegistrationComponent!: UserRegistrationFormComponent
-
-  ngAfterViewInit(): void {
-    this.loginComponent.minLengthPassword = this.minLengthPassword
-    this.userRegistrationComponent.minLengthPassword = this.minLengthPassword
-  }
 }
+
+export const MIN_LENGTH = 8
