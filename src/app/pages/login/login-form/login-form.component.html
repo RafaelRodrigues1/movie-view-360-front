@@ -1,12 +1,9 @@
 <form class="form">
   <mat-form-field class="form-component">
-    <mat-label>Email</mat-label>
-    <input type="email" matInput [formControl]="userEmail" placeholder="Ex. email@example.com">
-    <mat-error *ngIf="userEmail.hasError('email') && !userEmail.hasError('required')">
-      Please, enter a valid email address
-    </mat-error>
-    <mat-error *ngIf="userEmail.hasError('required')">
-      Email is <strong>required</strong>!
+    <mat-label>Username</mat-label>
+    <input type="text" matInput [formControl]="userName" placeholder="UserName123">
+    <mat-error *ngIf="userName.hasError('required')">
+      Username is <strong>required</strong>!
     </mat-error>
   </mat-form-field>
 
@@ -21,5 +18,9 @@
     </mat-error>
   </mat-form-field>
 
-  <button class="form-component" [disabled]="hasFormControllError()" mat-raised-button color="primary">Log in</button>
+  <mat-error style="text-align: center; margin-bottom: 5px;" *ngIf="loginErro">
+    Invalid username or password!
+  </mat-error>
+
+  <button class="form-component" [disabled]="hasFormControllError()" (click)="login()" mat-raised-button color="primary">Login</button>
 </form>

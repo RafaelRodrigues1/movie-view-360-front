@@ -6,6 +6,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { ComponentsModule } from 'src/app/shared/components/components.module';
 import { MovieListByGenderComponent } from '../movie-list-by-gender/movie-list-by-gender.component';
 import { GenderResolver } from 'src/app/shared/resolvers/gender.resolver';
+import { AuthGuard } from 'src/app/shared/guards/auth.guard';
+import { TemplateModule } from 'src/app/core/templates/template.module';
 
 const routes: Routes = [
   {
@@ -14,7 +16,8 @@ const routes: Routes = [
     pathMatch: 'full',
     resolve: {
       genders: GenderResolver
-    }
+    },
+    canActivate: [AuthGuard]
   }
 ]
 
@@ -27,7 +30,8 @@ const routes: Routes = [
     CommonModule,
     RouterModule.forRoot(routes),
     ComponentsModule,
-    MatToolbarModule
+    MatToolbarModule,
+    TemplateModule
   ]
 })
 export class HomeModule { }

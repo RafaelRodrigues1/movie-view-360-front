@@ -9,13 +9,13 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 @ClientResource({
-  endPoint: enviroment.endPoints.user
+  endPoint: enviroment.endPoints.auth
 })
-export class UserClient extends HttpClientGeneric<User> {
+export class AuthClient extends HttpClientGeneric<string> {
 
-  saveUser(user: User): Observable<User> {
+  login(user: User): Observable<string> {
     return this.post({
-      path: '/create',
+      path: '/login',
       body: user,
       aplicationType: 'application/json'
     }, false)

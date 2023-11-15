@@ -1,9 +1,9 @@
 <form class="form">
   <mat-form-field class="form-component">
-    <mat-label>Name</mat-label>
-    <input type="text" matInput [formControl]="userName" placeholder="Name Surname">
+    <mat-label>Username</mat-label>
+    <input type="text" matInput [formControl]="userName" placeholder="Username">
     <mat-error *ngIf="userName.hasError('required')">
-      Name is <strong>required</strong>!
+      Username is <strong>required</strong>!
     </mat-error>
   </mat-form-field>
 
@@ -24,7 +24,7 @@
     <mat-error *ngIf="userPassword.hasError('minlength') && !userPassword.hasError('required')">
       Password must be at least {{minLengthPassword}} characters long
     </mat-error>
-    <mat-error *ngIf="userEmail.hasError('required')">
+    <mat-error *ngIf="userPassword.hasError('required')">
       Password is <strong>required</strong>!
     </mat-error>
   </mat-form-field>

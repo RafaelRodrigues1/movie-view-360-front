@@ -9,6 +9,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { HomeModule } from './pages/home/home.module';
 import { LoginModule } from './pages/login/login.module';
 import { MovieDetailModule } from './pages/movie-detail/movie-detail.module';
+import { httpInterceptorProviders } from './shared/interceptors/http-interceptors';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,7 @@ import { MovieDetailModule } from './pages/movie-detail/movie-detail.module';
     LoginModule,
     MovieDetailModule
   ],
-  providers: [],
+  providers: [httpInterceptorProviders],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

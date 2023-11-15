@@ -4,6 +4,7 @@ import { EndPoint } from "../models/endpoint";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { ClientParameter } from "../models/client.parameter";
 import { map, Observable } from "rxjs";
+import { AuthService } from "src/app/shared/services/auth.service";
 
 @Injectable({
   providedIn: 'root'
@@ -22,9 +23,9 @@ export abstract class HttpClientGeneric<T> {
     this.urlResource = this.httpService.buildResourceUrl(this.endPoint)
   }
 
-  protected post(parameter: ClientParameter): Observable<T> {
+  protected post(parameter: ClientParameter, isArrayBody: boolean = true): Observable<T> {
     const [url, options] = this.getRequestDataByParameter(parameter)
-    return this.httpClient.post<T>(url, [parameter.body], options).pipe(
+    return this.httpClient.post<T>(url, isArrayBody ? [parameter.body] : parameter.body, options).pipe(
       map(response => this.httpService.responseMap(response, parameter.map))
     )
   }
