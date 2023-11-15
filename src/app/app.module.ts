@@ -10,6 +10,7 @@ import { HomeModule } from './pages/home/home.module';
 import { LoginModule } from './pages/login/login.module';
 import { MovieDetailModule } from './pages/movie-detail/movie-detail.module';
 import { httpInterceptorProviders } from './shared/interceptors/http-interceptors';
+import { MovieViewModule } from './pages/movie-view/movie-view.module';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { httpInterceptorProviders } from './shared/interceptors/http-interceptor
     HttpClientModule,
     HomeModule,
     LoginModule,
-    MovieDetailModule
+    MovieDetailModule,
+    MovieViewModule
   ],
   providers: [httpInterceptorProviders],
   bootstrap: [AppComponent]
