@@ -1,6 +1,5 @@
-import { Router } from '@angular/router';
 import { UserClient } from './../../../core/clients/user.client';
-import { Component, AfterViewChecked } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from 'src/app/shared/components/dialog/dialog.component';
@@ -21,8 +20,7 @@ export class UserRegistrationFormComponent {
 
   constructor(
     private userClient: UserClient,
-    private dialog: MatDialog,
-    private router: Router
+    private dialog: MatDialog
     ){}
 
   saveUser() {
